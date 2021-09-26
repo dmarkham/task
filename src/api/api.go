@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SetupAPIServer returns Gonic HTTP engin instance with handlers configured
 func SetupAPIServer() (*gin.Engine, error) {
 	apiServer := gin.New()
 	apiServer.Use(gin.Logger())
@@ -20,6 +21,7 @@ func SetupAPIServer() (*gin.Engine, error) {
 }
 
 // taskHandler gets data from 2 differnt sources and pushes a mixed string between the two to clients.
+// TODO: to be tenacious and stable, we may add short-circuit and retry patterns.
 func taskHandler(c *gin.Context) {
 	// 1. Fetching a name from "https://names.mcquay.me/api/v0/"
 	// => {“first_name”:“Hasina”,“last_name”:“Tanweer”}
@@ -59,16 +61,16 @@ func taskHandler(c *gin.Context) {
 	c.String(http.StatusOK, res)
 }
 
+// textProcessing trims and replces to correct possible errors from the input string
 func textProcessing(res string) string {
 	// Need to remove a space right before/after of the name
 	resArr := strings.Split(res, " ")
 	res = ""
 	for _, s := range resArr {
-		fmt.Println(s)
+		// Need to remove white space from head/tail
 		s = strings.Replace(s, " ", "", -1)
-		fmt.Println("=>", s)
 
-		// Need to avoid double spaces
+		// Sometimes there is a whitespace. Need to remove
 		if len(s) < 2 {
 			continue
 		}
@@ -85,7 +87,11 @@ func textProcessing(res string) string {
 			res = fmt.Sprint(res, "", s)
 		}
 	}
-	res = res[1 : len(res)-1]
+
+	// Need to remove if the first character is whitespace
+	if res[0] == ' ' {
+		res = res[1 : len(res)-1]
+	}
 
 	// Need to add a new line at the end of the string to remove \r
 	res = fmt.Sprint(res, "\n")
