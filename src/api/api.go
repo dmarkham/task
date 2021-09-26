@@ -53,9 +53,42 @@ func taskHandler(c *gin.Context) {
 
 	json.NewDecoder(resp.Body).Decode(&jokesBody)
 	res := jokesBody.Value.Joke
-	res = strings.Replace(res, " ", "", 1) // Need to remove a space right after the name
-	res = fmt.Sprint(res, "\n")
-	// TODO: possibly need to match the pronounces and names' gender?
+
+	res = textProcessing(res)
 
 	c.String(http.StatusOK, res)
+}
+
+func textProcessing(res string) string {
+	// Need to remove a space right before/after of the name
+	resArr := strings.Split(res, " ")
+	res = ""
+	for _, s := range resArr {
+		fmt.Println(s)
+		s = strings.Replace(s, " ", "", -1)
+		fmt.Println("=>", s)
+
+		// Need to avoid double spaces
+		if len(s) < 2 {
+			continue
+		}
+
+		// Need to remove the second s from possessive ('ss => 's)
+		if s == "'ss" {
+			s = "'s"
+		}
+
+		// Need to remove a spcae between the name and possessive ('s)
+		if s[0] != '\'' {
+			res = fmt.Sprint(res, " ", s)
+		} else {
+			res = fmt.Sprint(res, "", s)
+		}
+	}
+	res = res[1 : len(res)-1]
+
+	// Need to add a new line at the end of the string to remove \r
+	res = fmt.Sprint(res, "\n")
+
+	return res
 }

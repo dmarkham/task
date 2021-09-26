@@ -10,12 +10,12 @@ import (
 func main() {
 	fmt.Println("Hello")
 
-	fmt.Println("Bye")
-
 	apiServer, err := api.SetupAPIServer()
 	if err != nil {
 		log.Println("API server setup was not successful, abort")
 	}
 
 	apiServer.Run(":5000")
+
+	fmt.Println("Bye")
 }
