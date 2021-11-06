@@ -10,13 +10,11 @@ import (
 func mainHandler(w http.ResponseWriter, r *http.Request) {
 	name, err := getName()
 	if err != nil {
-		log.Fatal(err)
-		return
+		log.Panicln(err)
 	}
 	joke, err := name.getJoke()
 	if err != nil {
-		log.Fatal(err)
-		return
+		log.Panicln(err)
 	}
 	fmt.Fprintf(w, joke.Value.Joke)
 }
@@ -48,10 +46,9 @@ func (name *Name) getJoke() (Joke, error) {
 
 func startServer() {
 	http.HandleFunc("/", mainHandler)
-	log.Fatal(http.ListenAndServe(":5000", nil))
+	log.Panicln(http.ListenAndServe(":5000", nil))
 }
 
 func main() {
 	startServer()
-
 }
