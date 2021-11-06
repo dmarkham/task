@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func mainHandler(w http.ResponseWriter, r *http.Request) {
+func mainHandler(w http.ResponseWriter, _ *http.Request) {
 	name, err := getName()
 	if err != nil {
 		log.Panicln(err)
