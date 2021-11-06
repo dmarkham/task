@@ -10,7 +10,7 @@ type Name struct {
 }
 
 func (name *Name) getJokeUrl() string {
-	return "http://api.icndb.com/jokes/random?firstName=" + name.FirstName + "&lastname=" + name.LastName + "&limitTo=nerdy"
+	return "http://api.icndb.com/jokes/random?firstName=" + name.FirstName + "&lastName=" + name.LastName + "&limitTo=nerdy"
 }
 
 func bytesToName(rawName []byte) (Name, error) {
