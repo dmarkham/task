@@ -1,0 +1,10 @@
+Following a conversation with Dan I was told that I didn't need to write tests and instead should include what I would test.
+
+
+
+Some more things that I would test:
+- Receiving invalid responses from the APIs (like a 404, rate limit reached etc.)
+- Speed for concurrent vs sequential requests
+- Ensure that first and last name matches what's in the url (already have this)
+- Really long jokes, empty jokes and short jokes
+- Really long names, empty names and short names
