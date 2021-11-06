@@ -15,7 +15,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	joke, err := name.getJoke()
 	if err != nil {
-		log.Fatal(joke)
+		log.Fatal(err)
 		return
 	}
 	fmt.Fprintf(w, joke.Value.Joke)
