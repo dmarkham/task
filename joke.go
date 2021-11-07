@@ -11,6 +11,7 @@ type Joke struct {
 	} `json:"value"`
 }
 
+// TODO: add input validation for cases where it doesn't match the expected json.
 // bytesToJoke() takes bytes from a request and returns
 // a Joke and error.
 func bytesToJoke(rawName []byte) (Joke, error) {

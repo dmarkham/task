@@ -15,6 +15,7 @@ func (name *Name) getJokeUrl() string {
 	return "http://api.icndb.com/jokes/random?firstName=" + name.FirstName + "&lastName=" + name.LastName + "&limitTo=nerdy"
 }
 
+// TODO: add input validation for cases where it doesn't match the expected json.
 // BytesToName() takes bytes from a request and returns
 // a Name and error.
 func bytesToName(rawName []byte) (Name, error) {
