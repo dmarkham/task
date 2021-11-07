@@ -44,6 +44,9 @@ func (name *Name) getJoke() (Joke, error) {
 	return bytesToJoke(body)
 }
 
+// TODOs for full production ready:
+// Depending on the intended response for a rate limit, possibly
+// respond with a result from an archived joke + name
 func startServer() {
 	http.HandleFunc("/", mainHandler)
 	log.Panicln(http.ListenAndServe(":5000", nil))
