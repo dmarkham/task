@@ -9,10 +9,14 @@ type Name struct {
 	LastName  string `json:"last_name"`
 }
 
+// getJokeUrl() makes the url for the joke request
+// using the given Name.
 func (name *Name) getJokeUrl() string {
 	return "http://api.icndb.com/jokes/random?firstName=" + name.FirstName + "&lastName=" + name.LastName + "&limitTo=nerdy"
 }
 
+// BytesToName() takes bytes from a request and returns
+// a Name and error.
 func bytesToName(rawName []byte) (Name, error) {
 	name := Name{}
 	err := json.Unmarshal(rawName, &name)

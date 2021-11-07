@@ -11,6 +11,8 @@ type Joke struct {
 	} `json:"value"`
 }
 
+// bytesToJoke() takes bytes from a request and returns
+// a Joke and error.
 func bytesToJoke(rawName []byte) (Joke, error) {
 	joke := Joke{}
 	err := json.Unmarshal(rawName, &joke)
