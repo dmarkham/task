@@ -1,9 +1,9 @@
 # How to use the web service:
-##Clone the repository:
+## Clone the repository:
 ```
 % git clone https://github.com/camsn0w/task
 ```
-##Build the program:
+## Build the program:
 ```
 % cd task
 % go build .
