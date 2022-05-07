@@ -1,21 +1,59 @@
 package main
 
-import "encoding/json"
+import (
+	"fmt"
+	"strings"
+	"sync"
+)
 
 type Joke struct {
-	Type  string `json:"type"`
-	Value struct {
-		ID         int      `json:"id"`
-		Joke       string   `json:"joke"`
-		Categories []string `json:"categories"`
-	} `json:"value"`
+	*name
+	*content
+	result string
 }
 
-// TODO: add input validation for cases where it doesn't match the expected json.
-// bytesToJoke() takes bytes from a request and returns
-// a Joke and error.
-func bytesToJoke(rawName []byte) (Joke, error) {
-	joke := Joke{}
-	err := json.Unmarshal(rawName, &joke)
-	return joke, err
+func (j *Joke) swapPlaceholders() {
+	j.result = strings.ReplaceAll(j.content.Value.Joke, firstnamePlaceholder, j.FirstName)
+	j.result = strings.ReplaceAll(j.result, lastnamePlaceholder, j.LastName)
+}
+
+func (j *Joke) processNameAndContent() error {
+	err := Process(j.name)
+	if err != nil {
+		return err
+	}
+	err = Process(j.content)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (j *Joke) DoOne(wg *sync.WaitGroup, r Requestable) error {
+	defer wg.Done()
+	err := Process(r)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func NewJoke() string {
+	j := Joke{
+		name:    &name{},
+		content: &content{},
+		result:  "",
+	}
+	err := j.processNameAndContent()
+	if err != nil {
+		return err.Error()
+	}
+
+	fmt.Printf("Joke before: %v\n", j.content.Value.Joke)
+	fmt.Printf("Joke url: %v\n", j.content.GetUrl())
+	fmt.Printf("Name: %v\n", j.FirstName+" "+j.LastName)
+	fmt.Printf("Joke after: %v\n", j.result)
+
+	j.swapPlaceholders()
+	return j.result
 }
