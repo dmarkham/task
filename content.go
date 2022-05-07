@@ -16,7 +16,3 @@ type content struct {
 func (c *content) GetUrl() string {
 	return jokeUrl
 }
-
-func NewContent() *content {
-	return &content{}
-}
