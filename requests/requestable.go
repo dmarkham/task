@@ -1,4 +1,4 @@
-package main
+package requests
 
 import (
 	"encoding/json"
@@ -26,7 +26,7 @@ func toStruct(data []byte, buf any) error {
 	return json.Unmarshal(data, buf)
 }
 
-func Process(r Requestable) error {
+func Do(r Requestable) error {
 	res, err := makeRequest(r)
 	if err != nil {
 		return err

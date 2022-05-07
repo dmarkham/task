@@ -1,37 +1,30 @@
 package main
 
 import (
-	"fmt"
-	"strings"
 	"sync"
+	"task/requests"
 )
 
 type Joke struct {
-	*name
-	*content
-	result string
-}
-
-func (j *Joke) swapPlaceholders() {
-	j.result = strings.ReplaceAll(j.content.Value.Joke, firstnamePlaceholder, j.FirstName)
-	j.result = strings.ReplaceAll(j.result, lastnamePlaceholder, j.LastName)
+	*requests.Name
+	*requests.Content
 }
 
 func (j *Joke) processNameAndContent() error {
-	err := Process(j.name)
+	err := requests.Do(j.Name)
 	if err != nil {
 		return err
 	}
-	err = Process(j.content)
+	err = requests.Do(j.Content)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (j *Joke) DoOne(wg *sync.WaitGroup, r Requestable) error {
+func (j *Joke) DoOne(wg *sync.WaitGroup, r requests.Requestable) error {
 	defer wg.Done()
-	err := Process(r)
+	err := requests.Do(r)
 	if err != nil {
 		return err
 	}
@@ -40,20 +33,13 @@ func (j *Joke) DoOne(wg *sync.WaitGroup, r Requestable) error {
 
 func NewJoke() string {
 	j := Joke{
-		name:    &name{},
-		content: &content{},
-		result:  "",
+		Name:    &requests.Name{},
+		Content: &requests.Content{},
 	}
 	err := j.processNameAndContent()
 	if err != nil {
 		return err.Error()
 	}
 
-	fmt.Printf("Joke before: %v\n", j.content.Value.Joke)
-	fmt.Printf("Joke url: %v\n", j.content.GetUrl())
-	fmt.Printf("Name: %v\n", j.FirstName+" "+j.LastName)
-	fmt.Printf("Joke after: %v\n", j.result)
-
-	j.swapPlaceholders()
-	return j.result
+	return j.SwapPlaceholders(j.Name)
 }

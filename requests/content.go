@@ -1,10 +1,12 @@
-package main
+package requests
+
+import "strings"
 
 const firstnamePlaceholder = "FIRST_NAME"
 const lastnamePlaceholder = "LAST_NAME"
 const jokeUrl = "http://api.icndb.com/jokes/random?firstName=" + firstnamePlaceholder + "&lastName=" + lastnamePlaceholder + "&limitTo=nerdy"
 
-type content struct {
+type Content struct {
 	Type  string `json:"type"`
 	Value struct {
 		ID         int      `json:"id"`
@@ -13,6 +15,11 @@ type content struct {
 	} `json:"value"`
 }
 
-func (c *content) GetUrl() string {
+func (c *Content) GetUrl() string {
 	return jokeUrl
+}
+
+func (c *Content) SwapPlaceholders(n *Name) string {
+	temp := strings.ReplaceAll(c.Value.Joke, firstnamePlaceholder, n.FirstName)
+	return strings.ReplaceAll(temp, lastnamePlaceholder, n.LastName)
 }
