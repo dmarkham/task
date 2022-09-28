@@ -24,7 +24,7 @@ The code, README.md and any other supporting files should be compressed into a s
 $ curl "https://names.mcquay.me/api/v0/"
 {“first_name”:“Hasina”,“last_name”:“Tanweer”}
 Fetching a joke
-$ curl "http://api.icndb.com/jokes/random?firstName=John&lastName=Doe&limitTo=nerdy"
+$ curl "http://joke.loc8u.com:8888/joke?limitTo=nerdy&firstName=John&lastName=Doe"
 { “type”: “success”, “value”: { “id”: 181, “joke”: “John Doe’s OSI network model has only one layer - Physical.“, “categories”: [“nerdy”] } }
 ```
 
