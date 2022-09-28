@@ -1,7 +1,7 @@
 # The Task
 Create a production ready web service which combines two existing web services.
 Fetch a random name from https://names.mcquay.me/api/v0
-Fetch a random Chuck Norris joke from http://api.icndb.com/jokes/random?firstName=John&lastName=Doe&limitTo=nerdy
+Fetch a random Chuck Norris joke from http://joke.loc8u.com:8888/joke?limitTo=nerdy&firstName=John&lastName=Doe
 Combine the results and return them to the user.
 
 # Time Guidelines
