@@ -14,18 +14,20 @@ type Joke struct {
 	Joke       string   `json:"joke"`
 }
 
+// Response from the joke server has an additional type property. I have only received the success type. TODO: add additional checking for other types.
 type jokeResponse struct {
 	Type  string `json:"type"`
 	Value Joke   `json:"value"`
 }
 
-func fetchJoke() Joke {
+func fetchJoke(name Name) Joke {
+	jokeUrl := fmt.Sprintf("http://joke.loc8u.com:8888/joke?limitTo=nerdy&firstName=%s&lastName=%s", name.FirstName, name.LastName)
 
 	client := http.Client{
 		Timeout: TIMEOUT,
 	}
 
-	res, reqErr := client.Get(JOKE_URL)
+	res, reqErr := client.Get(jokeUrl)
 	if reqErr != nil {
 		log.Fatal("Joke request error:", reqErr)
 	}
@@ -39,6 +41,7 @@ func fetchJoke() Joke {
 		log.Fatal("Joke read error:", readErr)
 	}
 
+	// The URL retrieves a joke response and the value property of that response is the joke object
 	jokeResponse := jokeResponse{}
 
 	err := json.Unmarshal(body, &jokeResponse)
@@ -48,5 +51,6 @@ func fetchJoke() Joke {
 		return Joke{}
 	}
 
+	// Extracting the joke object from the response
 	return jokeResponse.Value
 }

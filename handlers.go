@@ -1,20 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
-	"strings"
 )
 
 func TaskHandler(w http.ResponseWriter, r *http.Request) {
+	// Fetch name and defer until the name returns
 	name := fetchName()
-	joke := fetchJoke()
-
-	// Replacing John Doe from the joke with the given name from the response
-	response := strings.Replace(joke.Joke, "John Doe", fmt.Sprintf("%s %s", name.FirstName, name.LastName), -1)
+	// Use name to replace John Doe when fetching the joke
+	joke := fetchJoke(name)
 
 	// response must be in an array of bytes
-	b := []byte(response)
+	b := []byte(joke.Joke)
 
 	w.Write(b)
 }
